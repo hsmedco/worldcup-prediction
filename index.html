@@ -664,7 +664,7 @@
 <div class="prizes-section">
   <div class="prize-card">
     <div class="badge">🎁 加入會員即可參加</div>
-    <p>抽出 <strong>10 位幸運兒</strong>，贈送 <strong>隨身防蚊包</strong> 一份</p>
+    <p>抽出 <strong>10 位幸運兒</strong>，贈送 <strong>20g 防蚊包</strong> 一份</p>
     <p class="condition">條件：加入會員並完成冠軍隊伍投票預測</p>
   </div>
   <div class="prize-card">
@@ -946,6 +946,30 @@ function validateForm() {
 }
 
 // ── SUBMIT ──
+// JSONP helper - bypasses CORS completely and gets real response back
+function jsonp(url) {
+  return new Promise((resolve, reject) => {
+    const cbName = 'cb_' + Date.now();
+    const script = document.createElement('script');
+    const timer = setTimeout(() => {
+      cleanup();
+      reject(new Error('timeout'));
+    }, 8000);
+    function cleanup() {
+      clearTimeout(timer);
+      delete window[cbName];
+      script.remove();
+    }
+    window[cbName] = function(data) {
+      cleanup();
+      resolve(data);
+    };
+    script.src = url + '&callback=' + cbName;
+    script.onerror = () => { cleanup(); reject(new Error('script error')); };
+    document.head.appendChild(script);
+  });
+}
+
 async function submitForm() {
   if (!validateForm()) {
     const firstErr = document.querySelector('.err-msg.show');
@@ -974,11 +998,7 @@ async function submitForm() {
       email:     payload.email,
     });
 
-    const res = await fetch(SHEET_URL + '?' + params.toString(), {
-      method: 'GET',
-      mode: 'cors',
-    });
-    const json = await res.json();
+    const json = await jsonp(SHEET_URL + '?' + params.toString());
 
     if (json.result === 'duplicate') {
       document.getElementById('duplicateModal').classList.add('open');
@@ -987,18 +1007,7 @@ async function submitForm() {
     }
   } catch (e) {
     console.error(e);
-    // 若 CORS 仍有問題，fallback 到 Image 方式
-    const params = new URLSearchParams({
-      timestamp: payload.timestamp,
-      team:      payload.team,
-      name:      payload.name,
-      phone:     payload.phone,
-      email:     payload.email,
-    });
-    const img = new Image();
-    img.src = SHEET_URL + '?' + params.toString();
-    await new Promise(r => setTimeout(r, 1200));
-    document.getElementById('successModal').classList.add('open');
+    alert('網路發生問題，請稍後再試。');
   } finally {
     btn.textContent = '✅ 確認送出';
     btn.disabled = false;
