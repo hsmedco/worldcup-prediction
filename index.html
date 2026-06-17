@@ -664,7 +664,7 @@
 <div class="prizes-section">
   <div class="prize-card">
     <div class="badge">🎁 加入會員即可參加</div>
-    <p>抽出 <strong>10 位幸運兒</strong>，贈送 <strong>隨身防蚊包</strong> 一份</p>
+    <p>抽出 <strong>10 位幸運兒</strong>，贈送 <strong>20g 防蚊包</strong> 一份</p>
     <p class="condition">條件：加入會員並完成冠軍隊伍投票預測</p>
   </div>
   <div class="prize-card">
@@ -789,7 +789,7 @@
 <script>
 // ── GOOGLE SHEETS CONFIG ──
 // 填入你的 Google Apps Script Web App URL
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyTmM1ekR_LgIoeNpw3z2Ek3gjSYhduZz-E2R_B7fRX2_t2-wyHmqJTiAYxbIMlBPAfxw/exec';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyHeLbV505zPIHn2wzWHFC0pJHckbD_AsDurMgObuKTZiVUwTJIbOWhnUsuqnfN4NtNgQ/exec';
 // 官方 LINE 連結（可自行修改）
 // const LINE_URL = 'https://line.me/R/ti/p/@152xwcel';
 
@@ -946,28 +946,15 @@ function validateForm() {
 }
 
 // ── SUBMIT ──
-// JSONP helper - bypasses CORS completely and gets real response back
-function jsonp(url) {
-  return new Promise((resolve, reject) => {
-    const cbName = 'cb_' + Date.now();
-    const script = document.createElement('script');
-    const timer = setTimeout(() => {
-      cleanup();
-      reject(new Error('timeout'));
-    }, 8000);
-    function cleanup() {
-      clearTimeout(timer);
-      delete window[cbName];
-      script.remove();
-    }
-    window[cbName] = function(data) {
-      cleanup();
-      resolve(data);
-    };
-    script.src = url + '&callback=' + cbName;
-    script.onerror = () => { cleanup(); reject(new Error('script error')); };
-    document.head.appendChild(script);
-  });
+// 本地記錄已送出的電話（瀏覽器 sessionStorage）
+function isPhoneSubmitted(phone) {
+  const submitted = JSON.parse(sessionStorage.getItem('submitted_phones') || '[]');
+  return submitted.includes(phone);
+}
+function markPhoneSubmitted(phone) {
+  const submitted = JSON.parse(sessionStorage.getItem('submitted_phones') || '[]');
+  submitted.push(phone);
+  sessionStorage.setItem('submitted_phones', JSON.stringify(submitted));
 }
 
 async function submitForm() {
@@ -977,11 +964,19 @@ async function submitForm() {
     return;
   }
 
+  const phone = document.getElementById('fPhone').value.trim();
+
+  // 本地檢查是否已送出過
+  if (isPhoneSubmitted(phone)) {
+    document.getElementById('duplicateModal').classList.add('open');
+    return;
+  }
+
   const payload = {
     timestamp: new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' }),
     team:      `${selectedTeam.name} (${selectedTeam.abbr})`,
     name:      document.getElementById('fName').value.trim(),
-    phone:     document.getElementById('fPhone').value.trim(),
+    phone:     phone,
     email:     document.getElementById('fEmail').value.trim(),
   };
 
@@ -990,21 +985,19 @@ async function submitForm() {
   btn.disabled = true;
 
   try {
-    const params = new URLSearchParams({
-      timestamp: payload.timestamp,
-      team:      payload.team,
-      name:      payload.name,
-      phone:     payload.phone,
-      email:     payload.email,
+    const params = new URLSearchParams(payload);
+    // 用 no-cors Image 方式送出（100% 不會被 CORS 擋）
+    await new Promise((resolve) => {
+      const img = new Image();
+      img.onload = img.onerror = resolve;
+      img.src = SHEET_URL + '?' + params.toString();
+      setTimeout(resolve, 3000); // 最多等 3 秒
     });
 
-    const json = await jsonp(SHEET_URL + '?' + params.toString());
+    // 送出成功後，記錄此電話到本地
+    markPhoneSubmitted(phone);
+    document.getElementById('successModal').classList.add('open');
 
-    if (json.result === 'duplicate') {
-      document.getElementById('duplicateModal').classList.add('open');
-    } else {
-      document.getElementById('successModal').classList.add('open');
-    }
   } catch (e) {
     console.error(e);
     alert('網路發生問題，請稍後再試。');
@@ -1072,7 +1065,7 @@ function doPost(e) {
    點選「部署」並複製取得的 Web App URL
 
 5. 將該 URL 貼回本 HTML 最上方的：
-   const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyTmM1ekR_LgIoeNpw3z2Ek3gjSYhduZz-E2R_B7fRX2_t2-wyHmqJTiAYxbIMlBPAfxw/exec';
+   const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyHeLbV505zPIHn2wzWHFC0pJHckbD_AsDurMgObuKTZiVUwTJIbOWhnUsuqnfN4NtNgQ/exec';
 
 6. 完成！每次有人送出表單，資料會自動寫入 Google Sheets。
 ════════════════════════════════════════════════════
