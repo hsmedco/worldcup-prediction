@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>世足冠軍預測 | 合順本草</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* ── TOKENS ── */
+  :root {
+    --green-deep:  #1a7a4a;
+    --green-mid:   #22a05a;
+    --green-grass: #2ECC71;
+    --green-light: #4CD964;
+    --gold:        #FF9500;
+    --gold-dark:   #E07800;
+    --white:       #FFFFFF;
+    --off-white:   #F8FFF4;
+    --dark:        #1a3a2a;
+    --gray:        #666;
+    --error:       #E74C3C;
+    --radius:      14px;
+    --shadow:      0 8px 32px rgba(0,0,0,0.10);
+    --page-bg:     #F0FFF4;
+    --text-main:   #1a3a2a;
+    --text-sub:    #3a6a4a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: #E8F8EE;
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  /* Content stacking */
+  .site-header {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: #0a2e1a;
+    text-align: center;
+    padding: 36px 20px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .pitch-bg {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .pitch-bg svg { width: 100%; height: 100%; opacity: 0.13; }
+  .player {
+    position: absolute;
+    font-size: 22px;
+    animation: runAcross linear infinite;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .player:nth-child(1) { top: 15%; animation-duration: 9s;  animation-delay: 0s; }
+  .player:nth-child(2) { top: 52%; animation-duration: 12s; animation-delay: -4s; }
+  .player:nth-child(3) { top: 35%; animation-duration: 7s;  animation-delay: -2s; }
+  .player:nth-child(4) { top: 70%; animation-duration: 11s; animation-delay: -6s; }
+  .player:nth-child(5) { top: 25%; animation-duration: 15s; animation-delay: -9s; }
+  @keyframes runAcross {
+    0%   { left: -8%; transform: scaleX(1); }
+    49%  { transform: scaleX(1); }
+    50%  { left: 108%; transform: scaleX(-1); }
+    100% { left: -8%; transform: scaleX(1); }
+  }
+  .ball-float {
+    position: absolute;
+    font-size: 16px;
+    opacity: 0.35;
+    animation: ballFloat ease-in-out infinite;
+    pointer-events: none;
+  }
+  .ball-float:nth-child(6) { top: 12%; left: 15%; animation-duration: 6s; animation-delay:0s; }
+  .ball-float:nth-child(7) { top: 65%; left: 75%; animation-duration: 9s; animation-delay:-3s; }
+  .ball-float:nth-child(8) { top: 42%; left: 55%; animation-duration: 5s; animation-delay:-1.5s; }
+  @keyframes ballFloat {
+    0%,100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-14px) rotate(200deg); }
+  }
+  .brand-name {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: clamp(30px, 8vw, 56px);
+    font-weight: 700;
+    color: #F0C040;
+    letter-spacing: 5px;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 20px rgba(240,192,64,0.45);
+  }
+  .main-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(24px, 6vw, 44px);
+    font-weight: 700;
+    letter-spacing: 2px;
+    line-height: 1.1;
+    color: var(--white);
+    position: relative;
+    z-index: 1;
+  }
+  .main-title span { color: var(--gold); }
+  .date-badge {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 4px 16px;
+    background: #22a05a;
+    color: #fff;
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    letter-spacing: 1px;
+    border-radius: 99px;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── PRIZES SECTION ── */
+  .prizes-section {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 24px 16px 8px;
+  }
+  .step-wrapper {
+    background: transparent;
+  }
+  .prize-card {
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 12px;
+  }
+  .prize-card:nth-child(1) {
+    background: linear-gradient(135deg, #C8F5D8, #E8FFF0);
+    border: 1.5px solid #6FCF97;
+    color: #1a5c35;
+  }
+  .prize-card:nth-child(1) p { color: #1a5c35; }
+  .prize-card:nth-child(1) .badge { background: #27AE60; color: #fff; }
+  .prize-card:nth-child(1) .condition { color: #52b77a; border-top-color: #A8E6C0; }
+  .prize-card:nth-child(2) {
+    background: linear-gradient(135deg, #FFF8E1, #FFE082);
+    border: 1.5px solid #FFB300;
+    color: #5D4037;
+  }
+  .prize-card:nth-child(2) p { color: #6D4C41; }
+  .prize-card:nth-child(2) .badge { background: #FF8F00; color: #fff; }
+  .prize-card:nth-child(2) .prize-table td { color: #5D4037; }
+  .prize-card:nth-child(2) .prize-table td:first-child { color: #E65100; }
+  .prize-card p strong { color: inherit; font-weight: 800; }
+  .prize-card .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #22a05a;
+    color: #fff;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    padding: 3px 12px;
+    border-radius: 99px;
+    margin-bottom: 10px;
+  }
+  .prize-card p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.88);
+  }
+  .prize-card p strong { color: var(--gold); }
+  .prize-card .condition {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .prize-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    font-size: 13px;
+  }
+  .prize-table tr { border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .prize-table tr:last-child { border-bottom: none; }
+  .prize-table td { padding: 7px 4px; color: rgba(255,255,255,0.88); }
+  .prize-table td:first-child { width: 72px; font-family: 'Oswald', sans-serif; color: var(--gold); font-size: 15px; }
+
+  /* ── STEP WRAPPER ── */
+  .step-wrapper {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 16px 48px;
+    position: relative;
+  }
+  .step-panel {
+    transition: all 0.45s cubic-bezier(0.4,0,0.2,1);
+  }
+  .step-panel.hidden {
+    display: none;
+  }
+
+  /* ── STEP HEADER ── */
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-top: 28px;
+  }
+  .step-num {
+    width: 36px; height: 36px;
+    background: #22a05a;
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .step-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #1a3a2a;
+  }
+  .step-sub {
+    font-size: 13px;
+    color: #5a8a6a;
+    margin-top: 2px;
+  }
+
+  /* ── TEAM GRID ── */
+  .teams-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .team-btn {
+    background: #ffffff;
+    border: 2px solid #C8E6C9;
+    border-radius: var(--radius);
+    padding: 14px 10px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.22s ease;
+    color: #1a3a2a;
+    font-family: 'Noto Sans TC', sans-serif;
+    position: relative;
+    outline: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .team-btn:hover {
+    background: #F1FFF5;
+    border-color: var(--green-mid);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(34,160,90,0.18);
+  }
+  .team-btn.selected {
+    background: linear-gradient(135deg, #E8F5E9, #F1FFF5);
+    border-color: var(--green-mid);
+    box-shadow: 0 0 0 3px rgba(34,160,90,0.2);
+  }
+  .team-btn.selected::after {
+    content: '🏆';
+    position: absolute;
+    top: 5px; right: 7px;
+    font-size: 13px;
+  }
+  .team-name { font-size: 13px; font-weight: 600; line-height: 1.3; color: #1a3a2a; }
+  .team-abbr { font-family: 'Oswald', sans-serif; font-size: 11px; color: #7aad8a; margin-top: 2px; }
+
+  /* ── SELECTED DISPLAY ── */
+  .selected-display {
+    background: #FFF8E1;
+    border: 1.5px solid #FFB300;
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    display: none;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 3px 10px rgba(255,179,0,0.15);
+  }
+  .selected-display.visible { display: flex; }
+  .selected-display .label { color: #8D6E63; font-size: 13px; }
+  .selected-display .pick { color: #E65100; font-weight: 700; font-size: 16px; }
+
+  /* ── NEXT BUTTON ── */
+  .btn-next, .btn-submit {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+  }
+  .btn-next {
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: var(--dark);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(6px);
+    transition: opacity 0.3s, transform 0.3s, background 0.2s;
+  }
+  .btn-next.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  .btn-next:hover { filter: brightness(1.08); box-shadow: 0 6px 20px rgba(240,192,64,0.35); }
+
+  .btn-submit {
+    background: linear-gradient(135deg, #22a05a, #1a7a4a);
+    color: var(--white);
+    margin-top: 8px;
+    box-shadow: 0 4px 16px rgba(34,160,90,0.3);
+  }
+  .btn-submit:hover { filter: brightness(1.06); box-shadow: 0 6px 20px rgba(34,160,90,0.4); }
+
+  /* ── FORM STYLES ── */
+  .form-card {
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    margin-bottom: 14px;
+  }
+  .form-card:nth-child(1) {
+    background: linear-gradient(135deg, #BBDEFB, #E3F2FD);
+    border: 1.5px solid #64B5F6;
+    box-shadow: 0 4px 16px rgba(33,150,243,0.15);
+  }
+  .form-card:nth-child(2) {
+    background: #FFFDE7;
+    border: 1.5px solid #FFE082;
+    box-shadow: 0 4px 16px rgba(255,179,0,0.10);
+  }
+  .form-card:nth-child(3) {
+    background: #F3E5F5;
+    border: 1.5px solid #CE93D8;
+    box-shadow: 0 4px 16px rgba(156,39,176,0.08);
+  }
+  .form-card h3 {
+    color: var(--green-deep) !important;
+  }
+  .form-card:nth-child(1) h3 { color: #1565C0 !important; }
+  .form-card:nth-child(1) .form-row label { color: #1565C0; }
+  .form-card:nth-child(1) input { background: #fff; border-color: #90CAF9; }
+  .form-card:nth-child(1) input:focus { border-color: #1976D2; box-shadow: 0 0 0 3px rgba(25,118,210,0.15); }
+  .form-card h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    color: var(--gold);
+    margin-bottom: 14px;
+    letter-spacing: 0.5px;
+  }
+  .form-row { margin-bottom: 14px; }
+  .form-row label {
+    display: block;
+    font-size: 13px;
+    color: #2d6a4f;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .form-row label .req { color: var(--error); margin-left: 2px; }
+  .form-row input,
+  .form-row select,
+  .form-row textarea {
+    width: 100%;
+    padding: 11px 14px;
+    background: #F9FBF9;
+    border: 1.5px solid #A5D6A7;
+    border-radius: 9px;
+    color: #1a3a2a;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+  }
+  .form-row input::placeholder { color: #aaa; }
+  .form-row input:focus,
+  .form-row select:focus,
+  .form-row textarea:focus {
+    border-color: var(--green-mid);
+    box-shadow: 0 0 0 3px rgba(34,160,90,0.15);
+    background: #fff;
+  }
+  .form-row select option { background: #fff; color: #1a3a2a; }
+  .form-row select { cursor: pointer; }
+
+
+
+
+  .social-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .btn-social {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: none;
+    border-radius: 9px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--white);
+    font-family: 'Noto Sans TC', sans-serif;
+    transition: filter 0.2s, transform 0.15s;
+    flex: 1;
+    min-width: 130px;
+    justify-content: center;
+  }
+  .btn-social:hover { filter: brightness(1.12); transform: translateY(-2px); }
+  .btn-linefriend { background: #06C755; }
+  .btn-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+  .btn-fb { background: #1877F2; }
+  .social-announce {
+    background: #FFF3E0;
+    border: 1.5px solid #FFB74D;
+    border-radius: 9px;
+    padding: 12px 14px;
+    font-size: 13.5px;
+    color: #5D4037;
+    line-height: 1.6;
+  }
+  .social-announce strong { color: #E65100; }
+
+  /* Back link */
+  .btn-back {
+    background: #fff;
+    border: 2px solid #22a05a;
+    color: #1a7a4a;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    margin-bottom: 8px;
+    border-radius: 99px;
+    font-family: 'Noto Sans TC', sans-serif;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(34,160,90,0.15);
+  }
+  .btn-back:hover {
+    background: #22a05a;
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(34,160,90,0.3);
+    transform: translateX(-2px);
+  }
+
+  /* Error messages */
+  .err-msg {
+    color: var(--error);
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+  }
+  .err-msg.show { display: block; }
+  .input-error {
+    border-color: var(--error) !important;
+  }
+
+  /* ── SUCCESS MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,60,20,0.55);
+    backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 999;
+    padding: 20px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: auto; }
+  .modal-box {
+    background: linear-gradient(150deg, #F1FFF5, #E8F5E9);
+    border: 2px solid #22a05a;
+    border-radius: 20px;
+    padding: 40px 30px 32px;
+    text-align: center;
+    max-width: 360px;
+    width: 100%;
+    box-shadow: var(--shadow), 0 0 60px rgba(240,192,64,0.2);
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .modal-overlay.open .modal-box { transform: scale(1); }
+  .modal-icon { font-size: 56px; margin-bottom: 16px; display: block; }
+  .modal-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 26px;
+    color: var(--gold);
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+  }
+  .modal-sub { font-size: 15px; color: rgba(255,255,255,0.75); line-height: 1.7; }
+  .modal-close {
+    margin-top: 24px;
+    padding: 12px 32px;
+    background: #22a05a;
+    color: #fff;
+    border: none;
+    border-radius: 99px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 1px;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar-wrap {
+    max-width: 700px;
+    margin: 20px auto 0;
+    padding: 0 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .progress-bar-track {
+    background: #C8E6C9;
+    border-radius: 99px;
+    height: 6px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #22a05a, #FF9500);
+    border-radius: 99px;
+    transition: width 0.45s ease;
+    width: 50%;
+  }
+  .progress-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+    font-size: 11px;
+    color: #7aad8a;
+  }
+  .progress-labels span.active { color: #FF9500; font-weight: 700; }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: #5a8a6a;
+    background: #D4EDD8;
+    position: relative;
+    z-index: 1;
+  }
+
+  .group-label {
+    grid-column: 1 / -1;
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #1a7a4a;
+    padding: 10px 4px 4px;
+    border-bottom: 2px solid #A5D6A7;
+    margin-bottom: 2px;
+    font-weight: 700;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 420px) {
+    .teams-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .team-name { font-size: 11px; }
+    .modal-box { padding: 28px 20px 24px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ball-icon { animation: none; }
+    * { transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="site-header">
+  <!-- Animated pitch background -->
+  <div class="pitch-bg">
+    <svg viewBox="0 0 800 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="200" fill="#145A3E"/>
+      <!-- pitch stripes -->
+      <rect x="0"   width="80" height="200" fill="#1a6b4a" opacity="0.6"/>
+      <rect x="160" width="80" height="200" fill="#1a6b4a" opacity="0.6"/>
+      <rect x="320" width="80" height="200" fill="#1a6b4a" opacity="0.6"/>
+      <rect x="480" width="80" height="200" fill="#1a6b4a" opacity="0.6"/>
+      <rect x="640" width="80" height="200" fill="#1a6b4a" opacity="0.6"/>
+      <!-- centre circle -->
+      <circle cx="400" cy="100" r="60" fill="none" stroke="white" stroke-width="2.5"/>
+      <circle cx="400" cy="100" r="3"  fill="white"/>
+      <!-- centre line -->
+      <line x1="400" y1="0" x2="400" y2="200" stroke="white" stroke-width="2.5"/>
+      <!-- boundary -->
+      <rect x="10" y="10" width="780" height="180" fill="none" stroke="white" stroke-width="2.5"/>
+      <!-- left penalty box -->
+      <rect x="10" y="55" width="120" height="90" fill="none" stroke="white" stroke-width="2"/>
+      <rect x="10" y="75" width="50"  height="50" fill="none" stroke="white" stroke-width="2"/>
+      <!-- right penalty box -->
+      <rect x="670" y="55" width="120" height="90" fill="none" stroke="white" stroke-width="2"/>
+      <rect x="740" y="75" width="50"  height="50" fill="none" stroke="white" stroke-width="2"/>
+      <!-- goals -->
+      <rect x="0"   y="80" width="10" height="40" fill="none" stroke="white" stroke-width="2"/>
+      <rect x="790" y="80" width="10" height="40" fill="none" stroke="white" stroke-width="2"/>
+    </svg>
+    <!-- Running players -->
+    <span class="player">🏃</span>
+    <span class="player">🏃</span>
+    <span class="player">🏃</span>
+    <span class="player">🏃</span>
+    <span class="player">🏃</span>
+    <!-- Floating balls -->
+    <span class="ball-float">⚽</span>
+    <span class="ball-float">⚽</span>
+    <span class="ball-float">⚽</span>
+  </div>
+
+  <div class="brand-name">合順本草</div>
+  <h1 class="main-title">世足冠軍<span>預測</span></h1>
+  <div class="date-badge">6/22 — 7/4</div>
+</header>
+
+<!-- ── PROGRESS BAR ── -->
+<div class="progress-bar-wrap">
+  <div class="progress-bar-track">
+    <div class="progress-bar-fill" id="progressFill"></div>
+  </div>
+  <div class="progress-labels">
+    <span id="pl1" class="active">① 選擇冠軍隊伍</span>
+    <span id="pl2">② 填寫個人資料</span>
+  </div>
+</div>
+
+<!-- ── PRIZES ── -->
+<div class="prizes-section">
+  <div class="prize-card">
+    <div class="badge">🎁 加入會員即可參加</div>
+    <p>抽出 <strong>10 位幸運兒</strong>，贈送 <strong>20g 防蚊包</strong> 一份</p>
+    <p class="condition">條件：加入會員並完成冠軍隊伍投票預測</p>
+  </div>
+  <div class="prize-card">
+    <div class="badge">冠軍大禮包</div>
+    <p style="margin-bottom:10px">本檔期有購買商品 ＋ 成功預測冠軍隊伍，加碼抽出 <strong>5 名幸運兒</strong></p>
+    <table class="prize-table">
+      <tr><td>第一名</td><td>購物金 <strong>$5,000</strong> ＋ 足浴包 5 包</td></tr>
+      <tr><td>第二名</td><td>購物金 <strong>$4,000</strong> ＋ 足浴包 4 包</td></tr>
+      <tr><td>第三名</td><td>購物金 <strong>$3,000</strong> ＋ 足浴包 3 包</td></tr>
+      <tr><td>第四名</td><td>購物金 <strong>$2,000</strong> ＋ 足浴包 2 包</td></tr>
+      <tr><td>第五名</td><td>購物金 <strong>$1,000</strong> ＋ 足浴包 1 包</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ── STEP WRAPPER ── -->
+<div class="step-wrapper">
+
+  <!-- STEP 1: VOTE -->
+  <div class="step-panel" id="step1">
+    <div class="step-header">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-title">選擇你心目中的冠軍</div>
+        <div class="step-sub">點選隊伍即可完成投票</div>
+      </div>
+    </div>
+
+    <div class="teams-grid" id="teamsGrid"></div>
+
+    <div class="selected-display" id="selectedDisplay">
+      <div>
+        <div class="label">你的預測冠軍</div>
+        <div class="pick" id="selName"></div>
+      </div>
+    </div>
+
+    <button class="btn-next" id="btnNext" onclick="goStep2()">下一步 →</button>
+  </div>
+
+  <!-- STEP 2: FORM -->
+  <div class="step-panel hidden" id="step2">
+    <button class="btn-back" onclick="goStep1()">← 返回修改預測</button>
+    <div class="step-header">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-title">填寫個人資料</div>
+        <div class="step-sub">所有欄位皆為必填</div>
+      </div>
+    </div>
+
+    <!-- 基本資料 -->
+    <div class="form-card">
+      <h3>📋 基本資料</h3>
+      <div class="form-row">
+        <label>姓名 <span class="req">*</span></label>
+        <input type="text" id="fName" placeholder="請輸入真實姓名">
+        <div class="err-msg" id="errName">請填寫姓名</div>
+      </div>
+      <div class="form-row">
+        <label>手機號碼 <span class="req">*</span></label>
+        <input type="tel" id="fPhone" placeholder="09xxxxxxxx" maxlength="10">
+        <div class="err-msg" id="errPhone">請填寫有效的手機號碼</div>
+      </div>
+      <div class="form-row">
+        <label>Email <span class="req">*</span></label>
+        <input type="email" id="fEmail" placeholder="example@email.com">
+        <div class="err-msg" id="errEmail">請填寫有效的 Email 地址</div>
+      </div>
+    </div>
+
+
+    <!-- 社群 -->
+    <div class="form-card">
+      <h3>追蹤合順本草，掌握最新消息</h3>
+      <div class="social-btns">
+        <a class="btn-social btn-linefriend" href="https://line.me/R/ti/p/@152xwcel" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+          LINE 官方帳號
+        </a>
+        <a class="btn-social btn-ig" href="https://www.instagram.com/hsmed.co/" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          Instagram
+        </a>
+        <a class="btn-social btn-fb" href="https://www.facebook.com/hsmed.co/" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          Facebook
+        </a>
+      </div>
+      <div class="social-announce">
+        📢 中獎名單將於 <strong>7/22</strong> 公布於 IG、FB 及官方 LINE，請記得追蹤！
+      </div>
+    </div>
+
+    <button class="btn-submit" onclick="submitForm()">✅ 確認送出</button>
+  </div>
+
+</div>
+
+<!-- ── SUCCESS MODAL ── -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal-box">
+    <span class="modal-icon">🏆</span>
+    <div class="modal-title">投票成功！</div>
+    <div class="modal-sub">感謝您的參與<br>敬請期待 <strong style="color:var(--gold)">7/4</strong> 開獎公告<br>祝您好運！⚽</div>
+    <button class="modal-close" onclick="closeModal()">好的，期待開獎！</button>
+  </div>
+</div>
+
+<footer class="site-footer">© 合順本草 HSMED｜活動期間 6/22 – 7/4</footer>
+
+<script>
+// ── GOOGLE SHEETS CONFIG ──
+// 填入你的 Google Apps Script Web App URL
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyTmM1ekR_LgIoeNpw3z2Ek3gjSYhduZz-E2R_B7fRX2_t2-wyHmqJTiAYxbIMlBPAfxw/exec';
+// 官方 LINE 連結（可自行修改）
+// const LINE_URL = 'https://line.me/R/ti/p/@152xwcel';
+
+// ── TEAMS DATA（2026 FIFA World Cup 官方 48 強）──
+const teams = [
+  // A組
+  { flag: '🇲🇽', name: '墨西哥',       abbr: 'MEX', group: 'A' },
+  { flag: '🇿🇦', name: '南非',         abbr: 'RSA', group: 'A' },
+  { flag: '🇰🇷', name: '南韓',         abbr: 'KOR', group: 'A' },
+  { flag: '🇨🇿', name: '捷克',         abbr: 'CZE', group: 'A' },
+  // B組
+  { flag: '🇨🇦', name: '加拿大',       abbr: 'CAN', group: 'B' },
+  { flag: '🇧🇦', name: '波赫',         abbr: 'BIH', group: 'B' },
+  { flag: '🇶🇦', name: '卡達',         abbr: 'QAT', group: 'B' },
+  { flag: '🇨🇭', name: '瑞士',         abbr: 'SUI', group: 'B' },
+  // C組
+  { flag: '🇧🇷', name: '巴西',         abbr: 'BRA', group: 'C' },
+  { flag: '🇲🇦', name: '摩洛哥',       abbr: 'MAR', group: 'C' },
+  { flag: '🇭🇹', name: '海地',         abbr: 'HAI', group: 'C' },
+  { flag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', name: '蘇格蘭',       abbr: 'SCO', group: 'C' },
+  // D組
+  { flag: '🇺🇸', name: '美國',         abbr: 'USA', group: 'D' },
+  { flag: '🇵🇾', name: '巴拉圭',       abbr: 'PAR', group: 'D' },
+  { flag: '🇦🇺', name: '澳洲',         abbr: 'AUS', group: 'D' },
+  { flag: '🇹🇷', name: '土耳其',       abbr: 'TUR', group: 'D' },
+  // E組
+  { flag: '🇩🇪', name: '德國',         abbr: 'GER', group: 'E' },
+  { flag: '🇨🇼', name: '古拉索',       abbr: 'CUW', group: 'E' },
+  { flag: '🇨🇮', name: '象牙海岸',     abbr: 'CIV', group: 'E' },
+  { flag: '🇪🇨', name: '厄瓜多',       abbr: 'ECU', group: 'E' },
+  // F組
+  { flag: '🇳🇱', name: '荷蘭',         abbr: 'NED', group: 'F' },
+  { flag: '🇯🇵', name: '日本',         abbr: 'JPN', group: 'F' },
+  { flag: '🇸🇪', name: '瑞典',         abbr: 'SWE', group: 'F' },
+  { flag: '🇹🇳', name: '突尼西亞',     abbr: 'TUN', group: 'F' },
+  // G組
+  { flag: '🇧🇪', name: '比利時',       abbr: 'BEL', group: 'G' },
+  { flag: '🇪🇬', name: '埃及',         abbr: 'EGY', group: 'G' },
+  { flag: '🇮🇷', name: '伊朗',         abbr: 'IRN', group: 'G' },
+  { flag: '🇳🇿', name: '紐西蘭',       abbr: 'NZL', group: 'G' },
+  // H組
+  { flag: '🇪🇸', name: '西班牙',       abbr: 'ESP', group: 'H' },
+  { flag: '🇨🇻', name: '維德角',       abbr: 'CPV', group: 'H' },
+  { flag: '🇸🇦', name: '沙烏地阿拉伯', abbr: 'KSA', group: 'H' },
+  { flag: '🇺🇾', name: '烏拉圭',       abbr: 'URU', group: 'H' },
+  // I組
+  { flag: '🇫🇷', name: '法國',         abbr: 'FRA', group: 'I' },
+  { flag: '🇸🇳', name: '塞內加爾',     abbr: 'SEN', group: 'I' },
+  { flag: '🇮🇶', name: '伊拉克',       abbr: 'IRQ', group: 'I' },
+  { flag: '🇳🇴', name: '挪威',         abbr: 'NOR', group: 'I' },
+  // J組
+  { flag: '🇦🇷', name: '阿根廷',       abbr: 'ARG', group: 'J' },
+  { flag: '🇩🇿', name: '阿爾及利亞',   abbr: 'ALG', group: 'J' },
+  { flag: '🇦🇹', name: '奧地利',       abbr: 'AUT', group: 'J' },
+  { flag: '🇯🇴', name: '約旦',         abbr: 'JOR', group: 'J' },
+  // K組
+  { flag: '🇵🇹', name: '葡萄牙',       abbr: 'POR', group: 'K' },
+  { flag: '🇨🇩', name: '剛果民主共和國',abbr: 'COD', group: 'K' },
+  { flag: '🇺🇿', name: '烏茲別克',     abbr: 'UZB', group: 'K' },
+  { flag: '🇨🇴', name: '哥倫比亞',     abbr: 'COL', group: 'K' },
+  // L組
+  { flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', name: '英格蘭',       abbr: 'ENG', group: 'L' },
+  { flag: '🇭🇷', name: '克羅埃西亞',   abbr: 'CRO', group: 'L' },
+  { flag: '🇬🇭', name: '迦納',         abbr: 'GHA', group: 'L' },
+  { flag: '🇵🇦', name: '巴拿馬',       abbr: 'PAN', group: 'L' },
+];
+
+let selectedTeam = null;
+
+// ── RENDER TEAMS with group headers ──
+function renderTeams() {
+  const grid = document.getElementById('teamsGrid');
+  let currentGroup = null;
+  teams.forEach((t, i) => {
+    if (t.group !== currentGroup) {
+      currentGroup = t.group;
+      const label = document.createElement('div');
+      label.className = 'group-label';
+      label.textContent = `${t.group} 組`;
+      grid.appendChild(label);
+    }
+    const btn = document.createElement('button');
+    btn.className = 'team-btn';
+    btn.id = `team-${i}`;
+    btn.innerHTML = `<div class="team-name">${t.name}</div><div class="team-abbr">${t.abbr}</div>`;
+    btn.onclick = () => selectTeam(i);
+    grid.appendChild(btn);
+  });
+}
+
+function selectTeam(idx) {
+  document.querySelectorAll('.team-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById(`team-${idx}`).classList.add('selected');
+  selectedTeam = teams[idx];
+
+  const disp = document.getElementById('selectedDisplay');
+  disp.classList.add('visible');
+  document.getElementById('selName').textContent = `${selectedTeam.name} (${selectedTeam.abbr})`;
+
+  document.getElementById('btnNext').classList.add('visible');
+}
+
+// ── NAVIGATION ──
+function goStep2() {
+  if (!selectedTeam) return;
+  document.getElementById('step1').classList.add('hidden');
+  document.getElementById('step2').classList.remove('hidden');
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('pl1').classList.remove('active');
+  document.getElementById('pl2').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goStep1() {
+  document.getElementById('step2').classList.add('hidden');
+  document.getElementById('step1').classList.remove('hidden');
+  document.getElementById('progressFill').style.width = '50%';
+  document.getElementById('pl1').classList.add('active');
+  document.getElementById('pl2').classList.remove('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+
+
+// ── VALIDATION HELPERS ──
+function showErr(id, show) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('show', show);
+}
+function clearErr(id) { showErr(id, false); }
+function markInput(id, isErr) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('input-error', isErr);
+}
+
+function validateForm() {
+  let ok = true;
+
+  const name = document.getElementById('fName').value.trim();
+  showErr('errName', !name); markInput('fName', !name);
+  if (!name) ok = false;
+
+  const phone = document.getElementById('fPhone').value.trim();
+  const phoneOk = /^09\d{8}$/.test(phone);
+  showErr('errPhone', !phoneOk); markInput('fPhone', !phoneOk);
+  if (!phoneOk) ok = false;
+
+  const email = document.getElementById('fEmail').value.trim();
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  showErr('errEmail', !emailOk); markInput('fEmail', !emailOk);
+  if (!emailOk) ok = false;
+
+  return ok;
+}
+
+// ── SUBMIT ──
+async function submitForm() {
+  if (!validateForm()) {
+    const firstErr = document.querySelector('.err-msg.show');
+    if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  const payload = {
+    timestamp: new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' }),
+    team:      `${selectedTeam.name} (${selectedTeam.abbr})`,
+    name:      document.getElementById('fName').value.trim(),
+    phone:     document.getElementById('fPhone').value.trim(),
+    email:     document.getElementById('fEmail').value.trim(),
+  };
+
+  const btn = document.querySelector('.btn-submit');
+  btn.textContent = '送出中…';
+  btn.disabled = true;
+
+  try {
+    if (SHEET_URL && SHEET_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+      await fetch(SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+    } else {
+      // Demo mode: log to console
+      console.log('📋 表單資料（Demo）：', payload);
+      await new Promise(r => setTimeout(r, 800));
+    }
+    document.getElementById('successModal').classList.add('open');
+  } catch (e) {
+    console.error(e);
+    alert('送出時發生問題，請稍後再試。');
+  } finally {
+    btn.textContent = '✅ 確認送出';
+    btn.disabled = false;
+  }
+}
+
+function closeModal() {
+  document.getElementById('successModal').classList.remove('open');
+}
+
+
+// ── INIT ──
+renderTeams();
+</script>
+
+<!--
+════════════════════════════════════════════════════
+  GOOGLE SHEETS 串接說明（Google Apps Script）
+════════════════════════════════════════════════════
+
+1. 開啟 Google Sheets，建立新試算表
+   欄位順序：時間戳記 | 預測隊伍 | 姓名 | 電話 | 寄送方式 | 寄送資訊
+
+2. 在試算表中點選：「擴充功能 → Apps Script」
+
+3. 貼上以下程式碼：
+
+function doPost(e) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const data  = JSON.parse(e.postData.contents);
+  sheet.appendRow([
+    data.timestamp,
+    data.team,
+    data.name,
+    data.phone,
+    data.email,
+  ]);
+  return ContentService
+    .createTextOutput(JSON.stringify({ result: 'success' }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+4. 部署：點選「部署 → 新增部署作業」
+   類型選「網頁應用程式」
+   執行者：我（你的帳號）
+   存取權限：任何人
+   點選「部署」並複製取得的 Web App URL
+
+5. 將該 URL 貼回本 HTML 最上方的：
+   const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyTmM1ekR_LgIoeNpw3z2Ek3gjSYhduZz-E2R_B7fRX2_t2-wyHmqJTiAYxbIMlBPAfxw/exec';
+
+6. 完成！每次有人送出表單，資料會自動寫入 Google Sheets。
+════════════════════════════════════════════════════
+-->
+</body>
+</html>
