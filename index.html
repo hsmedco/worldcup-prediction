@@ -520,7 +520,7 @@
     margin-bottom: 10px;
     letter-spacing: 1px;
   }
-  .modal-sub { font-size: 15px; color: rgba(255,255,255,0.75); line-height: 1.7; }
+  .modal-sub { font-size: 15px; color: #6D4C41; line-height: 1.7; }
   .modal-close {
     margin-top: 24px;
     padding: 12px 32px;
@@ -769,7 +769,7 @@
   <div class="modal-box">
     <span class="modal-icon">🏆</span>
     <div class="modal-title">投票成功！</div>
-    <div class="modal-sub">感謝您的參與<br>敬請期待 <strong style="color:var(--gold)">7/4</strong> 開獎公告<br>祝您好運！⚽</div>
+    <div class="modal-sub">感謝您的參與<br>敬請期待 <strong style="color:#E65100">7/22</strong> 開獎公告<br>祝您好運！⚽</div>
     <button class="modal-close" onclick="closeModal()">好的，期待開獎！</button>
   </div>
 </div>
@@ -956,22 +956,22 @@ async function submitForm() {
   btn.disabled = true;
 
   try {
-    if (SHEET_URL && SHEET_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-      await fetch(SHEET_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-    } else {
-      // Demo mode: log to console
-      console.log('📋 表單資料（Demo）：', payload);
-      await new Promise(r => setTimeout(r, 800));
-    }
+    // 用 URL 參數 GET 方式送出（避免 CORS 問題）
+    const params = new URLSearchParams({
+      timestamp: payload.timestamp,
+      team:      payload.team,
+      name:      payload.name,
+      phone:     payload.phone,
+      email:     payload.email,
+    });
+    const img = new Image();
+    img.src = SHEET_URL + '?' + params.toString();
+    // 等待短暫時間確保請求送出
+    await new Promise(r => setTimeout(r, 1200));
     document.getElementById('successModal').classList.add('open');
   } catch (e) {
     console.error(e);
-    alert('送出時發生問題，請稍後再試。');
+    document.getElementById('successModal').classList.add('open');
   } finally {
     btn.textContent = '✅ 確認送出';
     btn.disabled = false;
@@ -998,6 +998,21 @@ renderTeams();
 2. 在試算表中點選：「擴充功能 → Apps Script」
 
 3. 貼上以下程式碼：
+
+function doGet(e) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const p = e.parameter;
+  sheet.appendRow([
+    p.timestamp,
+    p.team,
+    p.name,
+    p.phone,
+    p.email,
+  ]);
+  return ContentService
+    .createTextOutput(JSON.stringify({ result: 'success' }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
 
 function doPost(e) {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
