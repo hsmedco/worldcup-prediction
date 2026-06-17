@@ -946,15 +946,31 @@ function validateForm() {
 }
 
 // ── SUBMIT ──
-// 本地記錄已送出的電話（瀏覽器 sessionStorage）
-function isPhoneSubmitted(phone) {
-  const submitted = JSON.parse(sessionStorage.getItem('submitted_phones') || '[]');
-  return submitted.includes(phone);
-}
-function markPhoneSubmitted(phone) {
-  const submitted = JSON.parse(sessionStorage.getItem('submitted_phones') || '[]');
-  submitted.push(phone);
-  sessionStorage.setItem('submitted_phones', JSON.stringify(submitted));
+// JSONP：可以拿到 Apps Script 回傳值，繞過 CORS
+function callSheet(params) {
+  return new Promise((resolve) => {
+    const cbName = 'gs_cb_' + Date.now();
+    const script = document.createElement('script');
+    const timer = setTimeout(() => {
+      delete window[cbName];
+      script.remove();
+      resolve({ result: 'timeout' });
+    }, 8000);
+    window[cbName] = function(data) {
+      clearTimeout(timer);
+      delete window[cbName];
+      script.remove();
+      resolve(data);
+    };
+    script.src = SHEET_URL + '?' + params.toString() + '&callback=' + cbName;
+    script.onerror = () => {
+      clearTimeout(timer);
+      delete window[cbName];
+      script.remove();
+      resolve({ result: 'error' });
+    };
+    document.head.appendChild(script);
+  });
 }
 
 async function submitForm() {
@@ -965,13 +981,6 @@ async function submitForm() {
   }
 
   const phone = document.getElementById('fPhone').value.trim();
-
-  // 本地檢查是否已送出過
-  if (isPhoneSubmitted(phone)) {
-    document.getElementById('duplicateModal').classList.add('open');
-    return;
-  }
-
   const payload = {
     timestamp: new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' }),
     team:      `${selectedTeam.name} (${selectedTeam.abbr})`,
@@ -984,27 +993,20 @@ async function submitForm() {
   btn.textContent = '送出中…';
   btn.disabled = true;
 
-  try {
-    const params = new URLSearchParams(payload);
-    // 用 no-cors Image 方式送出（100% 不會被 CORS 擋）
-    await new Promise((resolve) => {
-      const img = new Image();
-      img.onload = img.onerror = resolve;
-      img.src = SHEET_URL + '?' + params.toString();
-      setTimeout(resolve, 3000); // 最多等 3 秒
-    });
+  const params = new URLSearchParams(payload);
+  const json = await callSheet(params);
+  console.log('Apps Script 回應：', json);
 
-    // 送出成功後，記錄此電話到本地
-    markPhoneSubmitted(phone);
+  if (json.result === 'duplicate') {
+    document.getElementById('duplicateModal').classList.add('open');
+  } else if (json.result === 'success') {
     document.getElementById('successModal').classList.add('open');
-
-  } catch (e) {
-    console.error(e);
-    alert('網路發生問題，請稍後再試。');
-  } finally {
-    btn.textContent = '✅ 確認送出';
-    btn.disabled = false;
+  } else {
+    alert('網路發生問題（' + json.result + '），請稍後再試。');
   }
+
+  btn.textContent = '✅ 確認送出';
+  btn.disabled = false;
 }
 
 function closeModal() {
