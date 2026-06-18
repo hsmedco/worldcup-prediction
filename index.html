@@ -280,6 +280,18 @@
     top: 5px; right: 7px;
     font-size: 13px;
   }
+  .sel-counter {
+    display: inline-block;
+    background: #FF9500;
+    color: #fff;
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 99px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
   .team-name { font-size: 13px; font-weight: 600; line-height: 1.3; color: #1a3a2a; }
   .team-abbr { font-family: 'Oswald', sans-serif; font-size: 11px; color: #7aad8a; margin-top: 2px; }
 
@@ -669,7 +681,11 @@
   </div>
   <div class="prize-card">
     <div class="badge">冠軍大禮包</div>
-    <p style="margin-bottom:10px">本檔期有購買商品 ＋ 成功預測冠軍隊伍，加碼抽出 <strong>5 名幸運兒</strong></p>
+    <p style="margin-bottom:8px">本檔期有購買商品 ＋ 成功預測冠軍隊伍，加碼抽出 <strong>5 名幸運兒</strong></p>
+    <p style="margin-bottom:10px; font-size:13px; background:rgba(255,179,0,0.15); border-radius:8px; padding:8px 10px;">
+      🎟️ 消費每滿 <strong>$500</strong> 享有 <strong>1 次</strong>抽獎機會，以此類推<br>
+      <span style="font-size:11px; opacity:0.8;">（抽獎機會將由小幫手於抽獎時依購買紀錄手動增加）</span>
+    </p>
     <table class="prize-table">
       <tr><td>第一名</td><td>購物金 <strong>$5,000</strong> ＋ 足浴包 5 包</td></tr>
       <tr><td>第二名</td><td>購物金 <strong>$4,000</strong> ＋ 足浴包 4 包</td></tr>
@@ -689,7 +705,7 @@
       <div class="step-num">1</div>
       <div>
         <div class="step-title">選擇你心目中的冠軍</div>
-        <div class="step-sub">點選隊伍即可完成投票</div>
+        <div class="step-sub">最多可選 3 支隊伍，只要選中冠軍就有抽獎機會！</div>
       </div>
     </div>
 
@@ -697,7 +713,7 @@
 
     <div class="selected-display" id="selectedDisplay">
       <div>
-        <div class="label">你的預測冠軍</div>
+        <div class="label">已選擇的隊伍（最多 3 支）</div>
         <div class="pick" id="selName"></div>
       </div>
     </div>
@@ -857,7 +873,7 @@ const teams = [
   { flag: '🇵🇦', name: '巴拿馬',       abbr: 'PAN', group: 'L' },
 ];
 
-let selectedTeam = null;
+let selectedTeams = []; // 最多3支
 
 // ── RENDER TEAMS with group headers ──
 function renderTeams() {
@@ -881,20 +897,38 @@ function renderTeams() {
 }
 
 function selectTeam(idx) {
-  document.querySelectorAll('.team-btn').forEach(b => b.classList.remove('selected'));
-  document.getElementById(`team-${idx}`).classList.add('selected');
-  selectedTeam = teams[idx];
+  const btn = document.getElementById(`team-${idx}`);
+  const alreadySelected = btn.classList.contains('selected');
+
+  if (alreadySelected) {
+    // 取消選取
+    btn.classList.remove('selected');
+    selectedTeams = selectedTeams.filter(t => t !== idx);
+  } else {
+    if (selectedTeams.length >= 3) {
+      // 已選3支，移除最早選的
+      const oldest = selectedTeams.shift();
+      document.getElementById(`team-${oldest}`).classList.remove('selected');
+    }
+    btn.classList.add('selected');
+    selectedTeams.push(idx);
+  }
 
   const disp = document.getElementById('selectedDisplay');
-  disp.classList.add('visible');
-  document.getElementById('selName').textContent = `${selectedTeam.name} (${selectedTeam.abbr})`;
-
-  document.getElementById('btnNext').classList.add('visible');
+  if (selectedTeams.length > 0) {
+    disp.classList.add('visible');
+    document.getElementById('selName').textContent =
+      selectedTeams.map(i => `${teams[i].name} (${teams[i].abbr})`).join('、');
+    document.getElementById('btnNext').classList.add('visible');
+  } else {
+    disp.classList.remove('visible');
+    document.getElementById('btnNext').classList.remove('visible');
+  }
 }
 
 // ── NAVIGATION ──
 function goStep2() {
-  if (!selectedTeam) return;
+  if (selectedTeams.length === 0) return;
   document.getElementById('step1').classList.add('hidden');
   document.getElementById('step2').classList.remove('hidden');
   document.getElementById('progressFill').style.width = '100%';
@@ -983,7 +1017,7 @@ async function submitForm() {
   const phone = document.getElementById('fPhone').value.trim();
   const payload = {
     timestamp: new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' }),
-    team:      `${selectedTeam.name} (${selectedTeam.abbr})`,
+    team:      selectedTeams.map(i => `${teams[i].name} (${teams[i].abbr})`).join(' / '),
     name:      document.getElementById('fName').value.trim(),
     phone:     phone,
     email:     document.getElementById('fEmail').value.trim(),
