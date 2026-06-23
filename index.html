@@ -147,6 +147,15 @@
   }
   .prize-card:nth-child(1) p { color: #1a5c35; }
   .prize-card:nth-child(1) .badge { background: #27AE60; color: #fff; }
+  .badge-link {
+    text-decoration: none;
+    cursor: pointer;
+    transition: filter 0.2s, transform 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .badge-link:hover { filter: brightness(1.12); transform: translateY(-2px); }
   .prize-card:nth-child(1) .condition { color: #52b77a; border-top-color: #A8E6C0; }
   .prize-card:nth-child(2) {
     background: linear-gradient(135deg, #FFF8E1, #FFE082);
@@ -675,7 +684,7 @@
 <!-- ── PRIZES ── -->
 <div class="prizes-section">
   <div class="prize-card">
-    <div class="badge">🎁 加入會員即可參加</div>
+    <a class="badge badge-link" href="https://www.hsmed.co/users/sign_in" target="_blank" rel="noopener">🎁 加入會員即可參加 →</a>
     <p>抽出 <strong>10 位幸運兒</strong>，贈送 <strong>隨身防蚊包</strong> 一份</p>
     <p class="condition">條件：加入會員並完成冠軍隊伍投票預測</p>
   </div>
