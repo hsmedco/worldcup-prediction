@@ -543,6 +543,7 @@
   }
   .modal-sub { font-size: 15px; color: #6D4C41; line-height: 1.7; }
   .modal-close {
+    display: inline-block;
     margin-top: 24px;
     padding: 12px 32px;
     background: #22a05a;
@@ -554,7 +555,10 @@
     font-weight: 700;
     cursor: pointer;
     letter-spacing: 1px;
+    text-decoration: none;
+    transition: filter 0.2s;
   }
+  .modal-close:hover { filter: brightness(1.1); }
 
   /* ── PROGRESS BAR ── */
   .progress-bar-wrap {
@@ -692,15 +696,15 @@
     <div class="badge">冠軍大禮包</div>
     <p style="margin-bottom:8px">本檔期有購買商品 ＋ 成功預測冠軍隊伍，加碼抽出 <strong>5 名幸運兒</strong></p>
     <p style="margin-bottom:10px; font-size:13px; background:rgba(255,179,0,0.15); border-radius:8px; padding:8px 10px;">
-      🎟️ 單筆消費滿 <strong>$500</strong> 享有 <strong>1 次</strong>抽獎機會，以此類推<br>
+      🎟️ 消費每滿 <strong>$500</strong> 享有 <strong>1 次</strong>抽獎機會，以此類推<br>
       <span style="font-size:11px; opacity:0.8;">（抽獎機會將由小幫手於抽獎時依購買紀錄手動增加）</span>
     </p>
     <table class="prize-table">
-      <tr><td>頭 獎</td><td>購物金 <strong>$5,000</strong> ＋ 足浴包 5 包</td></tr>
-      <tr><td>貳 獎</td><td>購物金 <strong>$4,000</strong> ＋ 足浴包 4 包</td></tr>
-      <tr><td>參 獎</td><td>購物金 <strong>$3,000</strong> ＋ 足浴包 3 包</td></tr>
-      <tr><td>肆 獎</td><td>購物金 <strong>$2,000</strong> ＋ 足浴包 2 包</td></tr>
-      <tr><td>伍 獎</td><td>購物金 <strong>$1,000</strong> ＋ 足浴包 1 包</td></tr>
+      <tr><td>第一名</td><td>購物金 <strong>$5,000</strong> ＋ 足浴包 5 包</td></tr>
+      <tr><td>第二名</td><td>購物金 <strong>$4,000</strong> ＋ 足浴包 4 包</td></tr>
+      <tr><td>第三名</td><td>購物金 <strong>$3,000</strong> ＋ 足浴包 3 包</td></tr>
+      <tr><td>第四名</td><td>購物金 <strong>$2,000</strong> ＋ 足浴包 2 包</td></tr>
+      <tr><td>第五名</td><td>購物金 <strong>$1,000</strong> ＋ 足浴包 1 包</td></tr>
     </table>
   </div>
 </div>
@@ -791,11 +795,12 @@
 
 <!-- ── SUCCESS MODAL ── -->
 <div class="modal-overlay" id="successModal">
-  <div class="modal-box">
+  <div class="modal-box" style="position:relative;">
+    <button onclick="closeModal()" style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;color:#aaa;cursor:pointer;line-height:1;" title="關閉">✕</button>
     <span class="modal-icon">🏆</span>
     <div class="modal-title">投票成功！</div>
     <div class="modal-sub">感謝您的參與<br>敬請期待 <strong style="color:#E65100">7/22</strong> 開獎公告<br>祝您好運！⚽</div>
-    <button class="modal-close" onclick="closeModal()">好的，期待開獎！</button>
+    <a class="modal-close" href="https://www.hsmed.co/pages/cheer-for-the-world-cup" target="_blank" rel="noopener" onclick="closeModal()">預祝您中大獎 🎉</a>
   </div>
 </div>
 
